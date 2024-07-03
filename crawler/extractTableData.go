@@ -43,7 +43,7 @@ func ExtractTableData(doc *html.Node) ([][]string, error) {
 								}
 							}
 
-							if len(row) > 0 {
+							if len(row) > 0 && row[0] != "0" {
 								rows = append(rows, row)
 							}
 						}
