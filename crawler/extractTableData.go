@@ -1,6 +1,7 @@
 package crawler
 
 import (
+	"slices"
 	"strings"
 
 	"golang.org/x/net/html"
@@ -15,6 +16,12 @@ func ExtractText(n *html.Node) string {
 	}
 
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		if slices.Contains(c.Attr, html.Attribute{Key: "style", Val: "display:none"}) {
+			continue
+		}
+		if c.Data == "sup" {
+			continue
+		}
 		childText := ExtractText(c)
 		text += childText
 	}
