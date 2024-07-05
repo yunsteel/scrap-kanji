@@ -3,14 +3,13 @@ package main
 import (
 	"bufio"
 	"encoding/csv"
-	"fmt"
 	crawler "gocrawler/crawler/wiki"
 	"gocrawler/util"
 	"os"
 )
 
 func main() {
-	wikiList := crawler.CrawlWiki()
+	kanjiList := crawler.CrawlWiki()
 
 	file, err := os.Open("./kanji.csv")
 
@@ -27,14 +26,27 @@ func main() {
 
 	defer file.Close()
 
-	result := []crawler.TableData{}
-
-	table := util.CsvToCollection(rows)
-
-	for _, wikiItem := range wikiList {
-		wikiItem.MEANING = table[wikiItem.KANJI]
-		result = append(result, wikiItem)
+	table := [][]string{
+		{"아이디",
+			"한자",
+			"구자",
+			"부수",
+			"총획",
+			"학년",
+			"추가연도",
+			"삭제연도",
+			"발음",
+			"뜻"},
 	}
 
-	fmt.Println(result)
+	kanjiMap := util.CsvToCollection(rows)
+
+	for _, kanjiItem := range kanjiList {
+		kanjiItem.MEANING = kanjiMap[kanjiItem.KANJI]
+
+		row := []string{kanjiItem.ID, kanjiItem.KANJI, kanjiItem.OLD_KANJI, kanjiItem.RADICAL, kanjiItem.STROKE, kanjiItem.GRADE, kanjiItem.YEAR_ADDED, kanjiItem.YEAR_DELETED, kanjiItem.PRONUNCIATION, kanjiItem.MEANING}
+		table = append(table, row)
+	}
+
+	util.SaveToCSV(table, "./table.csv")
 }

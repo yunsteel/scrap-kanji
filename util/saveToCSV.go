@@ -8,7 +8,7 @@ import (
 func SaveToCSV(data [][]string, filename string) error {
 	file, err := os.Create(filename)
 	if err != nil {
-		return err
+		panic(err)
 	}
 	defer file.Close()
 
@@ -17,8 +17,9 @@ func SaveToCSV(data [][]string, filename string) error {
 
 	for _, row := range data {
 		if err := writer.Write(row); err != nil {
-			return err
+			panic(err)
 		}
 	}
+
 	return nil
 }
