@@ -39,6 +39,7 @@ type TableData struct {
 	YEAR_ADDED    string
 	YEAR_DELETED  string
 	PRONUNCIATION string
+	HUN_UM        string
 	MEANING       string
 }
 

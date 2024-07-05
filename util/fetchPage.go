@@ -15,7 +15,6 @@ func FetchPage(url string) (*html.Node, error) {
 	}
 
 	defer res.Body.Close()
-
 	if res.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("failed to fetch page: %s", res.Status)
 	}
