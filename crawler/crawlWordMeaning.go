@@ -2,6 +2,7 @@ package crawler
 
 import (
 	"gocrawler/util"
+	"net/url"
 
 	"golang.org/x/net/html"
 )
@@ -17,9 +18,9 @@ func GetWords(n *html.Node) string {
 	}
 
 	for child := n.FirstChild; child != nil; child = child.NextSibling {
-		s := (GetWords(child))
-		if len(s) > 0 {
-			res += s
+		word := (GetWords(child))
+		if len(word) > 0 {
+			res += word
 		}
 	}
 
@@ -27,12 +28,12 @@ func GetWords(n *html.Node) string {
 }
 
 func CrawlWordMeaning(kanji string) string {
-	url := "https://dic.daum.net/search.do?q=" + kanji + "&dic=jp"
+	url := "https://dic.daum.net/search.do?q=" + url.QueryEscape(kanji) + "&dic=jp"
 
 	doc, err := util.FetchPage(url)
 
 	if err != nil {
-		panic(err)
+		return ""
 	}
 
 	words := GetWords(doc)

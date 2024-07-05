@@ -10,8 +10,6 @@ import (
 )
 
 func main() {
-	fmt.Println(crawler.CrawlWordMeaning("完"))
-	return
 	kanjiList := crawler.CrawlWiki()
 
 	file, err := os.Open("./reference/kanji.csv")
@@ -60,6 +58,7 @@ func main() {
 			kanjiItem.MEANING}
 
 		table = append(table, row)
+		fmt.Println("[데이터가 추가됐어요] ", row)
 	}
 
 	util.SaveToCSV(table, "./table.csv")
