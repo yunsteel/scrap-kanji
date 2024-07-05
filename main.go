@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/csv"
-	crawler "gocrawler/crawler/wiki"
+	"gocrawler/crawler"
 	"gocrawler/util"
 	"os"
 )
@@ -11,7 +11,7 @@ import (
 func main() {
 	kanjiList := crawler.CrawlWiki()
 
-	file, err := os.Open("./kanji.csv")
+	file, err := os.Open("./reference/kanji.csv")
 
 	if err != nil {
 		return
