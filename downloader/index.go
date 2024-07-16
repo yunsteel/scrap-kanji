@@ -7,7 +7,6 @@ import (
 	"gocrawler/crawler"
 	"gocrawler/util"
 	"os"
-	"strconv"
 )
 
 func DownloadKanjiTable() {
@@ -48,11 +47,7 @@ func DownloadKanjiTable() {
 	for _, kanjiItem := range kanjiList {
 		kanjiItem.HUN_UM = kanjiMap[kanjiItem.KANJI]
 
-		intValue, err := strconv.Atoi(kanjiItem.ID)
-
-		if err != nil && intValue >= 1699 {
-			kanjiItem.MEANING = crawler.CrawlWordMeaning(kanjiItem.KANJI)
-		}
+		kanjiItem.MEANING = crawler.CrawlWordMeaning(kanjiItem.KANJI)
 
 		row := []string{kanjiItem.ID,
 			kanjiItem.KANJI,

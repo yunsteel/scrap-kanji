@@ -3,6 +3,7 @@ package crawler
 import (
 	"gocrawler/util"
 	"net/url"
+	"strings"
 
 	"golang.org/x/net/html"
 )
@@ -12,7 +13,11 @@ func GetWords(n *html.Node) string {
 	if util.ContainsAttribute(n.Attr, html.Attribute{Key: "class", Val: "cleanword_type kujk_type"}) {
 		for child := n.FirstChild; child != nil; child = child.NextSibling {
 			if (util.ContainsAttribute(child.Attr, html.Attribute{Key: "class", Val: "list_search"})) {
-				res += ExtractText(child)
+				for c := child.FirstChild; c != nil; c = c.NextSibling {
+					if c.Data == "li" {
+						res += " " + ExtractText(c)
+					}
+				}
 			}
 		}
 	}
@@ -24,7 +29,7 @@ func GetWords(n *html.Node) string {
 		}
 	}
 
-	return res
+	return strings.TrimSpace(res)
 }
 
 func CrawlWordMeaning(kanji string) string {
@@ -37,6 +42,5 @@ func CrawlWordMeaning(kanji string) string {
 	}
 
 	words := GetWords(doc)
-
 	return words
 }
