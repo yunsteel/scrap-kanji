@@ -64,3 +64,34 @@ func DownloadKanjiTable() {
 
 	util.SaveToCSV(table, "./table.csv")
 }
+
+func UpdateEmptyCell() {
+	file, err := os.Open("table.csv")
+
+	if err != nil {
+		fmt.Println("err", err)
+		return
+	}
+
+	reader := csv.NewReader(bufio.NewReader(file))
+	kanjiList, err := reader.ReadAll()
+
+	if err != nil {
+		fmt.Println("err", err)
+		return
+	}
+
+	defer file.Close()
+
+	const kanjiIndex = 1
+	const columnIndex = 10
+
+	for _, kanjiItem := range kanjiList {
+		if kanjiItem[columnIndex] == "" {
+			kanjiItem[columnIndex] = crawler.CrawlWordMeaning(kanjiItem[kanjiIndex])
+			fmt.Println("[데이터가 업데이트됐어요] ", kanjiItem)
+		}
+	}
+
+	util.SaveToCSV(kanjiList, "table.csv")
+}
